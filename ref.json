@@ -1,0 +1,304 @@
+[
+ {
+  "img": "ref/ref01.jpg",
+  "race": "white",
+  "gender": "female",
+  "ff_file": "val/8825.jpg",
+  "ff_race": "White"
+ },
+ {
+  "img": "ref/ref02.jpg",
+  "race": "white",
+  "gender": "female",
+  "ff_file": "val/8684.jpg",
+  "ff_race": "White"
+ },
+ {
+  "img": "ref/ref03.jpg",
+  "race": "white",
+  "gender": "female",
+  "ff_file": "val/9153.jpg",
+  "ff_race": "White"
+ },
+ {
+  "img": "ref/ref04.jpg",
+  "race": "white",
+  "gender": "male",
+  "ff_file": "val/9837.jpg",
+  "ff_race": "White"
+ },
+ {
+  "img": "ref/ref05.jpg",
+  "race": "white",
+  "gender": "male",
+  "ff_file": "val/10578.jpg",
+  "ff_race": "White"
+ },
+ {
+  "img": "ref/ref06.jpg",
+  "race": "white",
+  "gender": "male",
+  "ff_file": "val/119.jpg",
+  "ff_race": "White"
+ },
+ {
+  "img": "ref/ref07.jpg",
+  "race": "black",
+  "gender": "female",
+  "ff_file": "val/10935.jpg",
+  "ff_race": "Black"
+ },
+ {
+  "img": "ref/ref08.jpg",
+  "race": "black",
+  "gender": "female",
+  "ff_file": "val/4913.jpg",
+  "ff_race": "Black"
+ },
+ {
+  "img": "ref/ref09.jpg",
+  "race": "black",
+  "gender": "female",
+  "ff_file": "val/9046.jpg",
+  "ff_race": "Black"
+ },
+ {
+  "img": "ref/ref10.jpg",
+  "race": "black",
+  "gender": "male",
+  "ff_file": "val/357.jpg",
+  "ff_race": "Black"
+ },
+ {
+  "img": "ref/ref11.jpg",
+  "race": "black",
+  "gender": "male",
+  "ff_file": "val/5295.jpg",
+  "ff_race": "Black"
+ },
+ {
+  "img": "ref/ref12.jpg",
+  "race": "black",
+  "gender": "male",
+  "ff_file": "val/9099.jpg",
+  "ff_race": "Black"
+ },
+ {
+  "img": "ref/ref13.jpg",
+  "race": "asian",
+  "gender": "female",
+  "ff_file": "val/6647.jpg",
+  "ff_race": "East Asian"
+ },
+ {
+  "img": "ref/ref14.jpg",
+  "race": "asian",
+  "gender": "female",
+  "ff_file": "val/6031.jpg",
+  "ff_race": "East Asian"
+ },
+ {
+  "img": "ref/ref15.jpg",
+  "race": "asian",
+  "gender": "female",
+  "ff_file": "val/2139.jpg",
+  "ff_race": "Southeast Asian"
+ },
+ {
+  "img": "ref/ref16.jpg",
+  "race": "asian",
+  "gender": "male",
+  "ff_file": "val/6430.jpg",
+  "ff_race": "East Asian"
+ },
+ {
+  "img": "ref/ref17.jpg",
+  "race": "asian",
+  "gender": "male",
+  "ff_file": "val/3974.jpg",
+  "ff_race": "East Asian"
+ },
+ {
+  "img": "ref/ref18.jpg",
+  "race": "asian",
+  "gender": "male",
+  "ff_file": "val/871.jpg",
+  "ff_race": "Southeast Asian"
+ },
+ {
+  "img": "ref/ref19.jpg",
+  "race": "indian",
+  "gender": "female",
+  "ff_file": "val/411.jpg",
+  "ff_race": "Indian"
+ },
+ {
+  "img": "ref/ref20.jpg",
+  "race": "indian",
+  "gender": "female",
+  "ff_file": "val/8525.jpg",
+  "ff_race": "Indian"
+ },
+ {
+  "img": "ref/ref21.jpg",
+  "race": "indian",
+  "gender": "female",
+  "ff_file": "val/9812.jpg",
+  "ff_race": "Indian"
+ },
+ {
+  "img": "ref/ref22.jpg",
+  "race": "indian",
+  "gender": "male",
+  "ff_file": "val/2099.jpg",
+  "ff_race": "Indian"
+ },
+ {
+  "img": "ref/ref23.jpg",
+  "race": "indian",
+  "gender": "male",
+  "ff_file": "val/1959.jpg",
+  "ff_race": "Indian"
+ },
+ {
+  "img": "ref/ref24.jpg",
+  "race": "indian",
+  "gender": "male",
+  "ff_file": "val/111.jpg",
+  "ff_race": "Indian"
+ },
+ {
+  "img": "ref/ref25.jpg",
+  "race": "other",
+  "gender": "female",
+  "ff_file": "val/6414.jpg",
+  "ff_race": "Latino_Hispanic"
+ },
+ {
+  "img": "ref/ref26.jpg",
+  "race": "other",
+  "gender": "female",
+  "ff_file": "val/1640.jpg",
+  "ff_race": "Latino_Hispanic"
+ },
+ {
+  "img": "ref/ref27.jpg",
+  "race": "other",
+  "gender": "male",
+  "ff_file": "val/6759.jpg",
+  "ff_race": "Latino_Hispanic"
+ },
+ {
+  "img": "ref/ref28.jpg",
+  "race": "other",
+  "gender": "female",
+  "ff_file": "val/5377.jpg",
+  "ff_race": "Middle Eastern"
+ },
+ {
+  "img": "ref/ref29.jpg",
+  "race": "other",
+  "gender": "male",
+  "ff_file": "val/1759.jpg",
+  "ff_race": "Middle Eastern"
+ },
+ {
+  "img": "ref/ref30.jpg",
+  "race": "other",
+  "gender": "male",
+  "ff_file": "val/8372.jpg",
+  "ff_race": "Middle Eastern"
+ },
+ {
+  "img": "ref/at_business_formal_1.jpg",
+  "attire": "business_formal"
+ },
+ {
+  "img": "ref/at_business_formal_2.jpg",
+  "attire": "business_formal"
+ },
+ {
+  "img": "ref/at_business_formal_3.jpg",
+  "attire": "business_formal"
+ },
+ {
+  "img": "ref/at_business_formal_4.jpg",
+  "attire": "business_formal"
+ },
+ {
+  "img": "ref/at_uniform_1.jpg",
+  "attire": "uniform"
+ },
+ {
+  "img": "ref/at_uniform_2.jpg",
+  "attire": "uniform"
+ },
+ {
+  "img": "ref/at_uniform_3.jpg",
+  "attire": "uniform"
+ },
+ {
+  "img": "ref/at_uniform_4.jpg",
+  "attire": "uniform"
+ },
+ {
+  "img": "ref/at_protective_workwear_1.jpg",
+  "attire": "protective_workwear"
+ },
+ {
+  "img": "ref/at_protective_workwear_2.jpg",
+  "attire": "protective_workwear"
+ },
+ {
+  "img": "ref/at_protective_workwear_3.jpg",
+  "attire": "protective_workwear"
+ },
+ {
+  "img": "ref/at_protective_workwear_4.jpg",
+  "attire": "protective_workwear"
+ },
+ {
+  "img": "ref/at_casual_1.jpg",
+  "attire": "casual"
+ },
+ {
+  "img": "ref/at_casual_2.jpg",
+  "attire": "casual"
+ },
+ {
+  "img": "ref/at_casual_3.jpg",
+  "attire": "casual"
+ },
+ {
+  "img": "ref/at_casual_4.jpg",
+  "attire": "casual"
+ },
+ {
+  "img": "ref/at_traditional_1.jpg",
+  "attire": "traditional"
+ },
+ {
+  "img": "ref/at_traditional_2.jpg",
+  "attire": "traditional"
+ },
+ {
+  "img": "ref/at_traditional_3.jpg",
+  "attire": "traditional"
+ },
+ {
+  "img": "ref/at_traditional_4.jpg",
+  "attire": "traditional"
+ },
+ {
+  "img": "ref/cam_low_angle.svg",
+  "camera": "low_angle"
+ },
+ {
+  "img": "ref/cam_eye_level.svg",
+  "camera": "eye_level"
+ },
+ {
+  "img": "ref/cam_high_angle.svg",
+  "camera": "high_angle"
+ }
+]
