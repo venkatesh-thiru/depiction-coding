@@ -146,12 +146,12 @@ img{max-width:100%}
           <div class="prof">
             <label class="field" for="pAge"><span class="muted" style="font-size:.88rem">Age</span>
               <select id="pAge"><option value="">Prefer not to say</option><option>18–24</option><option>25–34</option><option>35–44</option><option>45–54</option><option>55 or older</option></select></label>
-            <label class="field" for="pGender"><span class="muted" style="font-size:.88rem">Gender</span>
-              <select id="pGender"><option value="">Prefer not to say</option><option>Woman</option><option>Man</option><option>Non-binary</option><option>Self-described</option></select></label>
-            <label class="field" for="pRegion"><span class="muted" style="font-size:.88rem">Region where you grew up</span>
-              <select id="pRegion"><option value="">Prefer not to say</option><option>Europe</option><option>North America</option><option>Latin America and Caribbean</option><option>Sub-Saharan Africa</option><option>Middle East and North Africa</option><option>South Asia</option><option>East Asia</option><option>Southeast Asia</option><option>Oceania</option></select></label>
-            <label class="field" for="pEth"><span class="muted" style="font-size:.88rem">Ethnicity, in your words</span>
-              <input id="pEth" type="text" maxlength="60" autocomplete="off"></label>
+            <label class="field" for="pGender"><span class="muted" style="font-size:.88rem">Gender identity</span>
+              <select id="pGender"><option value="">Prefer not to say</option><option>Woman</option><option>Man</option><option>Non-binary</option><option>Another identity</option></select></label>
+            <label class="field" for="pEdu"><span class="muted" style="font-size:.88rem">Highest level of education</span>
+              <select id="pEdu"><option value="">Prefer not to say</option><option>Secondary school</option><option>Vocational training</option><option>Bachelor's degree</option><option>Master's degree or Diplom</option><option>Doctorate</option></select></label>
+            <label class="field" for="pExp"><span class="muted" style="font-size:.88rem">Experience with annotating or labelling data</span>
+              <select id="pExp"><option value="">Prefer not to say</option><option>None</option><option>Some (one or two projects)</option><option>Regular</option></select></label>
           </div>
         </fieldset>
         <label class="row" style="align-items:flex-start;flex-wrap:nowrap" for="consent">
@@ -499,7 +499,7 @@ function enterSheet(){
 $("start").onclick=async()=>{
   $("start").disabled=true; $("startMsg").textContent="Preparing your images…"; $("startMsg").className="status muted";
   try{
-    const r=await api("start",{profile:{age:$("pAge").value, gender:$("pGender").value, region:$("pRegion").value, ethnicity:$("pEth").value.trim()}});
+    const r=await api("start",{profile:{age:$("pAge").value, gender:$("pGender").value, education:$("pEdu").value, annotation_experience:$("pExp").value}});
     S.profile=r.profile; S.blocks=r.profile.blocks||[]; $("startMsg").textContent=""; enterSheet();
   }catch(e){
     $("start").disabled=false; $("startMsg").className="status";
@@ -606,7 +606,7 @@ $("refresh").onclick=loadCoord;
 $("export").onclick=async()=>{await loadCoord(); download("depiction_coding_v3.csv",ANS_COLS,(S.coordRows||[]).flatMap(r=>r.docs))};
 $("exportPilot").onclick=async()=>{await loadCoord(); download("depiction_coding_v3_pilot.csv",ANS_COLS,(S.pilotRows||[]).flatMap(r=>r.docs))};
 $("exportProf").onclick=async()=>{await loadCoord();
-  download("depiction_coding_v3_profiles.csv",["token","code","role","group","blocks","started","age","gender","region","ethnicity","consent","feedback"],
+  download("depiction_coding_v3_profiles.csv",["token","code","role","group","blocks","started","age","gender","education","annotation_experience","consent","feedback"],
     (S.coordProfiles||[]).map(p=>({...p,blocks:(p.blocks||[]).join("+")})))};
 
 // ---------- Boot ----------
