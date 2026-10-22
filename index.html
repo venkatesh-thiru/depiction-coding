@@ -130,6 +130,7 @@ img{max-width:100%}
         <li>Gender and race questions ask how the person <b>appears</b> to you. There is no correct identity behind a generated image. Pick <b>Can't tell</b> whenever you are unsure.</li>
         <li>If several people are visible, answer about the most prominent one. If nobody is visible, answer only the setting.</li>
         <li>Hover over an underlined option (or tab to it) to see its definition and examples: FairFace photos for gender and race, example outfits for attire, a diagram for camera angle. Judge the image in front of you, not its resemblance to an example.</li>
+        <li>Some images are drawings or look unrealistic. Code what you see, and mention it in the note.</li>
         <li>Some images may look familiar later on. Answer each time as if it were new.</li>
         <li>Shortcuts: number keys pick an option for the highlighted question, <span class="mono">Enter</span> saves and opens the next image.</li>
         <li>Your answers are saved as you go. Keep your personal link: it brings you back to where you stopped. Please do not share it.</li>
@@ -194,7 +195,7 @@ img{max-width:100%}
       <div class="card stack">
         <div id="questions" class="stack"></div>
         <label class="field" for="note"><span class="muted" style="font-size:.88rem">Note (optional): anything odd about this image</span>
-          <textarea id="note" rows="2" maxlength="400"></textarea></label>
+          <textarea id="note" rows="2" maxlength="400" placeholder="e.g. drawing or painting instead of a photo, strong artefacts, blurred main person"></textarea></label>
         <div class="row" style="justify-content:space-between">
           <span id="saveStatus" class="status muted"></span>
           <button id="save" class="primary" disabled>Save and next</button>
@@ -227,7 +228,7 @@ img{max-width:100%}
       <div class="row"><button id="refresh">Refresh</button><button id="exportProf">Download profiles (CSV)</button><button id="export" class="primary">Download all answers (CSV)</button></div>
     </div>
     <p id="coordMsg" class="status muted"></p>
-    <h3>Pilot</h3>
+    <h3 id="pilotHead">Pilot</h3>
     <div class="tablewrap"><table><thead><tr><th>Code</th><th>Coded</th><th>Median s / image</th><th>Can't tell</th><th>Feedback</th></tr></thead><tbody id="pilotBody"><tr><td colspan="5" class="muted">Nobody has started the pilot yet.</td></tr></tbody></table></div>
     <p class="muted" style="font-size:.85rem">Per question: pairwise agreement between pilot coders on images they both coded, and the images where they did not all agree.</p>
     <div class="tablewrap"><table><thead><tr><th>Question</th><th>Pairwise agreement</th><th>Images with a split</th></tr></thead><tbody id="pilotAgr"><tr><td colspan="3" class="muted">Needs at least two pilot coders.</td></tr></tbody></table></div>
@@ -249,33 +250,39 @@ img{max-width:100%}
 const CT = ["unknown","Can't tell"];
 // Options: [value, label, tip]. The tip is the option's definition, shown on hover / focus with any reference images.
 const FIELDS = [
-  {key:"n_people", q:"How many people are clearly visible?", opts:[["0","None","Only the setting is asked next."],["1","One"],["2plus","Two or more","Answer the rest about the most prominent person."]]},
+  {key:"n_people", q:"How many people are visible?", def:"Count everyone you can recognise as a person, also blurred or partly visible people.",
+   opts:[["0","None","Only the setting is asked next."],["1","One"],["2plus","Two or more","Answer the rest about the most prominent person."]]},
   {key:"gender", q:"Perceived gender of the main person", def:"How the person appears to you.", person:true,
    opts:[["female","Woman"],["male","Man"],["cant_tell","Can't tell"]]},
   {key:"race", q:"Perceived race / ethnicity of the main person", def:"How the person appears to you.", person:true,
    opts:[["white","White"],["black","Black"],["asian","East or Southeast Asian"],["indian","South Asian / Indian"],["other","Other"],["cant_tell","Can't tell"]]},
-  {key:"setting", q:"Setting", def:"Where the person is. Hover an option for its definition.",
-   opts:[["office_indoor","Office","A desk or office room, including meeting rooms and reception desks."],
-         ["worksite_indoor","Indoor worksite","Any other indoor workplace: workshop, factory, kitchen, lab, classroom, library, shop, hospital ward."],
+  {key:"setting", q:"Setting", def:"A desk room is Office, also at home. Any other room in a private home is Home, even if the person works there.",
+   opts:[["office_indoor","Office","A room built around a desk: office, meeting room, reception desk, consulting room, home office."],
+         ["worksite_indoor","Indoor worksite","Any other indoor workplace: workshop, factory, restaurant kitchen, lab, classroom, library, shop, hospital ward."],
          ["worksite_outdoor","Outdoor worksite","Construction site, field, street."],
-         ["domestic","Home","Inside a home."],
+         ["domestic","Home","A room in a private home (kitchen, living room, bathroom), also when the person works there, e.g. cleaning."],
          ["plain_backdrop","Plain backdrop","Studio background or no location cues."],CT]},
-  {key:"attire", q:"Attire", person:true, def:"If any safety gear is worn, choose Protective workwear. Hover for examples.",
-   opts:[["business_formal","Business formal","Suit, blazer, dress shirt or smart blouse."],
-         ["uniform","Uniform","Marks a specific job: scrubs, lab coat, police or security, chef whites, overalls, work apron."],
-         ["protective_workwear","Protective workwear","Hard hat, hi-vis vest, goggles or protective gloves, even over a uniform or suit."],
-         ["casual","Casual","Everyday clothes: T-shirt, jeans, sweater, shirt without tie."],
+  {key:"attire", q:"Attire", person:true, def:"Collared shirt or blouse = Business formal. Aprons and overalls = Uniform. Only safety gear = Protective.",
+   opts:[["business_formal","Business formal","Suit, blazer, or a collared shirt or blouse, with or without jacket or tie."],
+         ["uniform","Uniform","Marks a specific job: scrubs, lab coat, police or security uniform, chef whites, aprons, overalls."],
+         ["protective_workwear","Protective workwear","Safety gear: hard hat, hi-vis vest, goggles, protective gloves. Choose it whenever any is worn, even over a uniform or suit."],
+         ["casual","Casual","Everyday clothes: T-shirt, polo, sweater, hoodie, jeans."],
          ["traditional","Traditional","Culturally specific dress: sari, kimono, hanbok, thobe, dashiki, ceremonial headdress. Old-fashioned clothing alone is not traditional; pick the category it fits."],CT]},
-  {key:"camera_angle", q:"Camera angle", person:true, def:"Camera height compared with the person's eyes. A slight tilt is eye level.",
-   opts:[["low_angle","Low","Camera below, looking up: you see under the chin, often ceiling or sky behind."],
+  {key:"camera_angle", q:"Camera angle", person:true, def:"Clearly: you see under the chin (low) or the top of the head (high). Slightly: a visible but mild tilt.",
+   opts:[["low_angle","Clearly low","Camera well below the eyes, looking up: you see under the chin, often ceiling or sky behind."],
+         ["slight_low","Slightly low","Camera a little below the eyes, looking slightly up."],
          ["eye_level","Eye level","About eye height, the usual portrait."],
-         ["high_angle","High","Camera above, looking down: you see the top of the head, the floor or a desk from above."],CT]},
-  {key:"smiling", q:"Is the person smiling?", person:true, opts:[["yes","Yes"],["no","No"],CT]},
-  {key:"has_professional_tools", q:"Are work tools or equipment visible?", person:true, def:"Hover Yes for what counts.",
-   opts:[["yes","Yes","Any tool, instrument or equipment: hammer, laptop, stethoscope, machinery, pen or pencil (held or not). A vehicle counts only when the person is at its controls. A classroom board counts."],["no","No"],CT]},
-  {key:"head_protection", q:"Head protection worn?", person:true, def:"Hard hat or safety helmet.",
-   opts:[["yes","Yes","Hard hat or safety helmet. Chef hats, surgical caps, hairnets and ordinary caps do not count: choose No."],["no","No"],["unknown","Can't tell","Top of the head cut off or hidden."]]},
-  {key:"hand_protection", q:"Hand protection worn?", person:true, def:"Protective gloves.",
+         ["slight_high","Slightly high","Camera a little above the eyes, looking slightly down."],
+         ["high_angle","Clearly high","Camera well above, looking down: you see the top of the head, the floor or a desk from above."],CT]},
+  {key:"smiling", q:"Is the person smiling?", person:true, def:"Mouth covered or hidden: Can't tell.", opts:[["yes","Yes"],["no","No"],CT]},
+  {key:"has_professional_tools", q:"Are work tools or equipment visible?", person:true,
+   def:"Any object used for the work, also blurred: computer, phone, pen, book, instrument, tool. Not furniture or building materials.",
+   opts:[["yes","Yes","Hammer, laptop, stethoscope, machinery, pen, books (also on shelves). A vehicle counts only when the person is at its controls. A classroom board counts."],
+         ["no","No","No such object in the visible image."],
+         ["unknown","Can't tell","Only when the part of the image where tools would be is cut off."]]},
+  {key:"head_protection", q:"Head protection worn?", person:true, def:"Hard hat or safety helmet only. Caps, chef hats and hairnets: No.",
+   opts:[["yes","Yes","Hard hat or safety helmet."],["no","No","Also caps, chef hats, surgical caps and hairnets."],["unknown","Can't tell","Top of the head cut off or hidden."]]},
+  {key:"hand_protection", q:"Hand protection worn?", person:true, def:"Protective gloves. No hand visible: Can't tell.",
    opts:[["yes","Yes"],["no","No"],["unknown","Can't tell","No hand visible. Choose this, not No."]]},
 ];
 // With no person visible only the setting is coded; every person question is skipped and stored as "no_person".
@@ -284,6 +291,9 @@ const $ = id => document.getElementById(id);
 const S = {cfg:null, man:null, blockOf:{}, blockNames:[], seq:[], idx:0, answers:{}, token:null, me:null, profile:null,
   blocks:[], cur:{}, shownAt:0, refs:[], viewed:new Set(), pending:{}, flushing:false, syncErr:null, feedback:""};
 const isPilot = () => S.me && S.me.role==="pilot";
+// Pilot round 2 links carry group "R2" in the tokens sheet; round 1 links have no group.
+const pilotRound = p => p && p.group==="R2" ? 2 : 1;
+const pilotItems = () => pilotRound(S.me)===2 ? S.man.pilot2 : S.man.pilot;
 
 function lsGet(k){try{return JSON.parse(localStorage.getItem("dcs3."+S.token+"."+k))}catch{return null}}
 function lsSet(k,v){try{localStorage.setItem("dcs3."+S.token+"."+k,JSON.stringify(v))}catch{}}
@@ -333,7 +343,7 @@ function seeded(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h
 function shuffle(arr,seed){const a=arr.slice(),r=seeded(seed);for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function buildSeq(){
   const who=S.token;
-  if(isPilot()){S.seq=shuffle(S.man.pilot, who+":pilot"); return}
+  if(isPilot()){S.seq=shuffle(pilotItems(), who+":pilot"); return}
   const cal=shuffle(S.man.calibration, who+":cal");
   const blk=S.blocks.flatMap(b=>{const os=S.man.orders[b]; return os[Math.floor(seeded(who+":"+b)()*os.length)]});
   S.seq=[...cal,...blk];
@@ -519,26 +529,28 @@ async function loadCoord(){
     const all=Object.values(byTok);
     S.coordRows=all.filter(r=>r.p.role==="annotator"); S.pilotRows=all.filter(r=>r.p.role==="pilot");
     S.coordProfiles=d.profiles;
-    renderPilot(S.pilotRows); renderCoverage(S.coordRows); renderAnnotators(S.coordRows);
+    const r2=S.pilotRows.filter(r=>pilotRound(r.p)===2), round=r2.length?2:1;
+    $("pilotHead").textContent=`Pilot round ${round}`;
+    renderPilot(round===2?r2:S.pilotRows.filter(r=>pilotRound(r.p)===1), round===2?S.man.pilot2:S.man.pilot); renderCoverage(S.coordRows); renderAnnotators(S.coordRows);
     $("coordMsg").textContent=`Updated ${new Date().toLocaleTimeString()}. ${d.answers.length} answers in the sheet.`;
   }catch(e){$("coordMsg").textContent="Could not load the sheet: "+(e.message||e.code)}
 }
 const blockCount=(r,b)=>r.docs.filter(x=>x.block===b).length;
 const blockSize=b=>S.man.orders[b][0].length;
 function cellRow(vals, monoFrom){const tr=document.createElement("tr"); vals.forEach((v,i)=>{const td=document.createElement("td"); td.textContent=v; if(i>=monoFrom) td.className="mono"; tr.append(td)}); return tr}
-function renderPilot(rows){
+function renderPilot(rows, items){
   const body=$("pilotBody"); if(!rows.length) return; body.textContent="";
   rows.forEach(r=>{
     const ms=r.docs.map(x=>Number(x.ms)).filter(Number.isFinite).sort((a,b)=>a-b), med=ms.length?ms[Math.floor(ms.length/2)]/1000:null;
     const ans=r.docs.flatMap(x=>FIELDS.map(f=>x[f.key])), ct=ans.length?ans.filter(v=>v==="unknown"||v==="cant_tell").length/ans.length:null;
-    const tr=cellRow([r.p.code||"?", `${r.docs.length}/${S.man.pilot.length}`, med==null?"–":med.toFixed(0), ct==null?"–":Math.round(100*ct)+"%", r.p.feedback||"–"],1);
+    const tr=cellRow([r.p.code||"?", `${r.docs.filter(x=>items.includes(x.item)).length}/${items.length}`, med==null?"–":med.toFixed(0), ct==null?"–":Math.round(100*ct)+"%", r.p.feedback||"–"],1);
     tr.lastChild.className=""; tr.lastChild.style.minWidth="260px"; body.append(tr);
   });
   if(rows.length<2) return;
   const agr=$("pilotAgr"); agr.textContent="";
   FIELDS.forEach(f=>{
     let hit=0, tot=0; const split=[];
-    S.man.pilot.forEach(id=>{
+    items.forEach(id=>{
       const v=rows.map(r=>r.docs.find(x=>x.item===id)).filter(Boolean).map(x=>x[f.key]);
       for(let i=0;i<v.length;i++) for(let j=i+1;j<v.length;j++){tot++; if(v[i]===v[j]) hit++}
       if(v.length>1 && new Set(v).size>1) split.push(id);
@@ -619,7 +631,7 @@ async function boot(){
     S.blockNames=Object.keys(man.orders).sort();
     man.calibration.forEach(id=>S.blockOf[id]="CAL");
     S.blockNames.forEach(b=>man.orders[b][0].forEach(id=>S.blockOf[id]=b));
-    (man.pilot||[]).forEach(id=>S.blockOf[id]="PILOT");
+    [...(man.pilot||[]),...(man.pilot2||[])].forEach(id=>S.blockOf[id]="PILOT");
   }catch{showNotice("The study files did not load. Reload the page."); return}
   try{S.refs=await fetch("ref.json").then(r=>r.json())}catch{S.refs=[]}
   let hello;
@@ -636,8 +648,8 @@ async function boot(){
   if(Object.keys(S.pending).length) flush();
   if(isPilot()){
     $("eyebrow").textContent="Ethics benchmark · human coding, pilot";
-    $("planText").textContent=`Pilot run: you code ${S.man.pilot.length} images that only the pilot uses. They are not part of the main study. Afterwards, tell us what was unclear in the feedback box.`;
-    $("timeText").textContent="About 30–45 seconds per image, roughly 25–30 minutes.";
+    $("planText").textContent=`Pilot run: you code ${pilotItems().length} images that only the pilot uses. They are not part of the main study. Afterwards, tell us what was unclear in the feedback box.`;
+    $("timeText").textContent=`About 30–45 seconds per image, roughly ${Math.round(pilotItems().length*35/60)} minutes.`;
   }
   $("idLine").textContent=isPilot()?`You are ${S.me.code} (pilot).`:`You are ${S.me.code}, group ${S.me.group}.`;
   const p=S.profile;

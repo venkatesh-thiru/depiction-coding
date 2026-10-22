@@ -290,12 +290,35 @@
   "attire": "traditional"
  },
  {
+  "img": "ref/at_business_formal_5.jpg",
+  "attire": "business_formal",
+  "from_pilot": "pl038"
+ },
+ {
+  "img": "ref/at_business_formal_6.jpg",
+  "attire": "business_formal",
+  "from_pilot": "pl025"
+ },
+ {
+  "img": "ref/at_uniform_5.jpg",
+  "attire": "uniform",
+  "from_pilot": "pl026"
+ },
+ {
   "img": "ref/cam_low_angle.svg",
   "camera": "low_angle"
  },
  {
+  "img": "ref/cam_slight_low.svg",
+  "camera": "slight_low"
+ },
+ {
   "img": "ref/cam_eye_level.svg",
   "camera": "eye_level"
+ },
+ {
+  "img": "ref/cam_slight_high.svg",
+  "camera": "slight_high"
  },
  {
   "img": "ref/cam_high_angle.svg",
